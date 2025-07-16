@@ -4,12 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 import { Post } from './post.entity';
+import { ImageService } from 'src/images/images.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post])],
-  providers: [PostsService],
+  providers: [PostsService,ImageService],
   controllers: [PostsController],
-  exports: [PostsService],  // <-- add this line
+  exports: [PostsService],
 })
 export class PostsModule {}
 

@@ -9,8 +9,8 @@ export class Post {
   @Column()
   title: string;
 
-  @Column()
-  image: string; 
+  @Column({ nullable: true })
+  image: string;
 
   @Column('text')
   content: string;
@@ -18,6 +18,6 @@ export class Post {
   @CreateDateColumn()
   date: Date;
 
-  @ManyToOne(() => User)
-  user: User; 
+  @ManyToOne(() => User, user => user.posts, { eager: true })
+  user: User;
 }

@@ -16,7 +16,7 @@ import { User } from './users/user.entity';
 import { Post } from './posts/post.entity';
 import { Comment } from './comments/comment.entity';
 import { Vote } from './votes/vote.entity';
-import { ImagesService } from './images/images.service';
+import { ImageService } from './images/images.service';
 
 import { IpLoggerMiddleware } from './auth/IpLoggerMiddleware';
 
@@ -41,12 +41,12 @@ import { IpLoggerMiddleware } from './auth/IpLoggerMiddleware';
     VotesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ImagesService],
+  providers: [AppService, ImageService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(IpLoggerMiddleware)
-      .forRoutes('*');
-  }
+      consumer
+        .apply(IpLoggerMiddleware)
+        .forRoutes('*');
+    }
 }

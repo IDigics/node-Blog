@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,Get,Post,Put,Delete,Param,Body,UseGuards,UseInterceptors,UploadedFile,ParseIntPipe,} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PostsService } from './posts.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AdminGuard } from 'src/auth/admin.guard';
-
+import { ImageService } from 'src/images/images.service';
 @Controller('posts')
 export class PostsController {
-  constructor(private postsService: PostsService) {}
+  constructor(
+    private postsService: PostsService,
+    private imageService: ImageService,
+  ) {}
 
   @Get()
   findAll() {
@@ -17,20 +22,46 @@ export class PostsController {
     return this.postsService.findById(id);
   }
 
-  @UseGuards(AuthGuard, AdminGuard)
   @Post()
-  create(@Body() body: any) {
-    return this.postsService.create(body);
+  @UseGuards(AuthGuard, AdminGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  async create(
+    @Body() body: { title: string; content: string },
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const postData: any = {
+      title: body.title,
+      content: body.content,
+    };
+
+    if (file) {
+      const filename = await this.imageService.processAndSaveImage(file);
+      postData.image = filename;
+    }
+
+    return this.postsService.create(postData);
   }
 
-  @UseGuards(AuthGuard, AdminGuard)
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() body: any) {
-    return this.postsService.update(id, body);
+  @UseGuards(AuthGuard, AdminGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: Partial<{ title: string; content: string }>,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const updateData: any = { ...body };
+
+    if (file) {
+      const filename = await this.imageService.processAndSaveImage(file);
+      updateData.image = filename;
+    }
+
+    return this.postsService.update(id, updateData);
   }
 
-  @UseGuards(AuthGuard, AdminGuard)
   @Delete(':id')
+  @UseGuards(AuthGuard, AdminGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.remove(id);
   }

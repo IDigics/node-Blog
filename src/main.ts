@@ -11,7 +11,7 @@ async function bootstrap() {
   if (!sessionSecret) throw new Error('KEY is required');
 
   app.enableCors({
-  origin:true,
+  origin:'*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],

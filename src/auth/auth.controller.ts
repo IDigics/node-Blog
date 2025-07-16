@@ -30,6 +30,8 @@ export class AuthController {
   ) {
     const user = await this.authService.signin(email, password);
     session.userId = user.id;
+    session.role = user.isAdmin ? 'admin' : 'user';
+    
     return { message: 'Signed in successfully' };
   }
 
