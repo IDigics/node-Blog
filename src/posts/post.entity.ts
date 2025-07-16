@@ -12,10 +12,10 @@ export class Post {
   title: string;
 
   @Column({ type: 'text' })
-  content: string; // can hold HTML string
+  content: string;
 
   @Column({ nullable: true })
-  imagePath: string; // store filename or URL
+  imagePath: string;
 
   @ManyToOne(() => User, user => user.posts)
   author: User;

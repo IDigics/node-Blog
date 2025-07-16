@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { Post } from 'src/posts/post.entity';
 
@@ -7,12 +13,15 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
+  @Column()
   content: string;
 
-  @ManyToOne(() => User, user => user.comments)
-  author: User;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @ManyToOne(() => Post, post => post.comments)
+  @ManyToOne(() => User, (user) => user.comments)
+  user: User;
+
+  @ManyToOne(() => Post, (post) => post.comments)
   post: Post;
 }

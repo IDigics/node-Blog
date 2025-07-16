@@ -1,9 +1,9 @@
-A- generate project                         "nest new blog-app"
-B-Install SQLite + TypeORM                  "npm install @nestjs/typeorm typeorm sqlite3"
-C-session express and bcrpyt                "npm install bcrypt @types/bcrypt express-session @types/express-session"
-D-gnerate modules , controllers and services  "nest g {module,controller,service} {auth,users,posts,comments,votes}"
-E- install @nestjs/config and create a .env file "npm install @nestjs/config"
-E- generate secret key "node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+A- generate project                                     "nest new blog-app"
+B-Install SQLite + TypeORM                              "npm install @nestjs/typeorm typeorm sqlite3"
+C-session express and bcrpyt                            "npm install bcrypt @types/bcrypt express-session @types/express-session"
+D-gnerate modules , controllers and services            "nest g {module,controller,service} {auth,users,posts,comments,votes}"
+E- install @nestjs/config and create a .env file        "npm install @nestjs/config"
+E- generate secret key                                  "node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
 
 
@@ -11,3 +11,6 @@ E- generate secret key "node -e "console.log(require('crypto').randomBytes(64).t
 2. connect entities with app.module 
 3. connect each entity with it's own module
 4. create session with express-session in main.ts using the secret key (E)
+5. setup service controller and app.ts for session and authentication
+6. make auth guard to be used for post comment for nrml users and admin for posts crud
+7. install db visulaizor extension in vs code
