@@ -1,7 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Post } from 'src/posts/post.entity';
-import { Comment } from 'src/comments/comment.entity';
-import { Vote } from 'src/votes/vote.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class User {
@@ -12,17 +9,8 @@ export class User {
   email: string;
 
   @Column()
-  password: string; // hashed
+  password: string;
 
   @Column({ default: false })
   isAdmin: boolean;
-
-  @OneToMany(() => Post, post => post.author)
-  posts: Post[];
-
-  @OneToMany(() => Comment, comment => comment.author)
-  comments: Comment[];
-
-  @OneToMany(() => Vote, vote => vote.user)
-  votes: Vote[];
 }

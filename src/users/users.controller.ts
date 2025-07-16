@@ -1,7 +1,7 @@
-import {Controller,Get,Param,Delete,Patch,Body,Session,UseGuards,} from '@nestjs/common';
+import { Controller, Get, Param, Delete, Patch, Body, Session, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthGuard } from 'src/auth/auth.guard'; // You’ll create this
-import { AdminGuard } from 'src/auth/admin.guard'; // You’ll create this
+import { AuthGuard } from 'src/auth/auth.guard';
+import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -21,19 +21,22 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(AdminGuard)
-  getUser(@Param('id') id: string) {
-    return this.usersService.findById(+id);
+  getUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findById(id);
   }
 
   @Delete(':id')
   @UseGuards(AdminGuard)
-  deleteUser(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
   }
 
   @Patch(':id')
   @UseGuards(AdminGuard)
-  updateUser(@Param('id') id: string, @Body() body: Partial<{ email: string; password: string }>) {
-    return this.usersService.update(+id, body);
+  updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: Partial<{ email: string; password: string }>,
+  ) {
+    return this.usersService.update(id, body);
   }
 }

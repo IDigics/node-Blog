@@ -3,17 +3,17 @@ import { User } from 'src/users/user.entity';
 import { Post } from 'src/posts/post.entity';
 
 @Entity()
-@Unique(['user', 'post']) // one vote per user per post
+@Unique(['user', 'post']) 
 export class Vote {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  value: number; // 1 or -1
+  value: number;
 
-  @ManyToOne(() => User, user => user.votes)
+  @ManyToOne(() => User)
   user: User;
 
-  @ManyToOne(() => Post, post => post.votes)
+  @ManyToOne(() => Post)
   post: Post;
 }

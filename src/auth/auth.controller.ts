@@ -13,7 +13,13 @@ export class AuthController {
   ) {
     const user = await this.authService.signup(email, password);
     session.userId = user.id;
-    return user;
+    console.log(user.email + ': Signed up successfully')
+
+    return {id: user.id,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    message: 'Signed up successfully',
+  };
   }
 
   @Post('signin')

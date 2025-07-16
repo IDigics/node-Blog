@@ -12,14 +12,19 @@ export class VotesService {
     private voteRepo: Repository<Vote>,
   ) {}
 
-  async vote(user: User, post: Post, value: number) {
+  async vote(user: User, post: Post, value: number): Promise<Vote | void> {
+    if (!user || !post) {
+      throw new Error('User and post are required');
+    }
+
     const existing = await this.voteRepo.findOne({
       where: { user: { id: user.id }, post: { id: post.id } },
     });
 
     if (existing) {
       if (existing.value === value) {
-        return this.voteRepo.remove(existing);
+        await this.voteRepo.remove(existing);
+        return;
       } else {
         existing.value = value;
         return this.voteRepo.save(existing);

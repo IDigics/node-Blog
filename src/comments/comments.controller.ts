@@ -1,9 +1,9 @@
-import {Controller,Get,Post,Delete,Param,Body,Session,UseGuards, NotFoundException} from '@nestjs/common';
-
+import { Controller, Get, Post, Delete, Param, Body, Session, UseGuards, NotFoundException } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CommentsService } from './comments.service';
 import { UsersService } from 'src/users/users.service';
 import { PostsService } from 'src/posts/posts.service';
+import { Comment } from './comment.entity';
 
 @Controller('comments')
 export class CommentsController {
@@ -14,7 +14,7 @@ export class CommentsController {
   ) {}
 
   @Get(':postId')
-  async getComments(@Param('postId') postId: string) {
+  async getComments(@Param('postId') postId: string): Promise<Comment[]> {
     return this.commentsService.getByPost(+postId);
   }
 
@@ -24,12 +24,12 @@ export class CommentsController {
     @Param('postId') postId: string,
     @Body('content') content: string,
     @Session() session: Record<string, any>,
-  ) {
+  ): Promise<Comment> {
     const user = await this.usersService.findById(session.userId);
     const post = await this.postsService.findById(+postId);
     if (!post) {
-    throw new NotFoundException('Post not found');
-  }
+      throw new NotFoundException('Post not found');
+    }
     return this.commentsService.addComment(user, post, content);
   }
 
@@ -38,8 +38,8 @@ export class CommentsController {
   async deleteComment(
     @Param('id') id: string,
     @Session() session: Record<string, any>,
-  ) {
+  ): Promise<void> {
     const user = await this.usersService.findById(session.userId);
-    return this.commentsService.deleteComment(+id, user);
+    await this.commentsService.deleteComment(+id, user);
   }
 }

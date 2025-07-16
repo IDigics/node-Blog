@@ -15,17 +15,17 @@ export class CommentsService {
   async getByPost(postId: number): Promise<Comment[]> {
     return this.commentsRepo.find({
       where: { post: { id: postId } },
-      relations: ['user'],
+      relations: ['user'],  // confirm 'user' is correct in your entity
       order: { createdAt: 'DESC' },
     });
   }
 
   async addComment(user: User, post: Post, content: string): Promise<Comment> {
-    const comment = this.commentsRepo.create({content,user,post,});
+    const comment = this.commentsRepo.create({ content, user, post });
     return this.commentsRepo.save(comment);
   }
 
-  async deleteComment(commentId: number, currentUser: User) {
+  async deleteComment(commentId: number, currentUser: User): Promise<void> {
     const comment = await this.commentsRepo.findOne({
       where: { id: commentId },
       relations: ['user'],
@@ -40,6 +40,6 @@ export class CommentsService {
       throw new ForbiddenException('Not allowed to delete this comment');
     }
 
-    return this.commentsRepo.remove(comment);
+    await this.commentsRepo.remove(comment);
   }
 }

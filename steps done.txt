@@ -3,8 +3,11 @@ B-Install SQLite + TypeORM                              "npm install @nestjs/typ
 C-session express and bcrpyt                            "npm install bcrypt @types/bcrypt express-session @types/express-session"
 D-gnerate modules , controllers and services            "nest g {module,controller,service} {auth,users,posts,comments,votes}"
 E- install @nestjs/config and create a .env file        "npm install @nestjs/config"
-E- generate secret key                                  "node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-
+F- generate secret key                                  "node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+G- download DTO and validation package                  "npm install class-validator class-transformer"
+H-upload handling :                                     "npm install sharp"
+                                                        "npm install --save-dev @types/sharp"
+                                                        "npm install --save-dev @types/multer "
 
 
 1. create all entities 

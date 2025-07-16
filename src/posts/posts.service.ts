@@ -1,32 +1,35 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './post.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class PostsService {
   constructor(@InjectRepository(Post) private postRepo: Repository<Post>) {}
 
-  findAll() {
+  async findAll(): Promise<Post[]> {
     return this.postRepo.find({ relations: ['author'] });
   }
 
-  findById(id: number) {
-    return this.postRepo.findOne({ where: { id } });
+  async findById(id: number): Promise<Post> {
+    const post = await this.postRepo.findOne({ where: { id } });
+    if (!post) throw new NotFoundException('Post not found');
+    return post;
   }
 
-  create(postData: Partial<Post>) {
+  async create(postData: Partial<Post>): Promise<Post> {
     const post = this.postRepo.create(postData);
     return this.postRepo.save(post);
   }
 
-  update(id: number, updateData: Partial<Post>) {
-    return this.postRepo.update(id, updateData);
+  async update(id: number, updateData: Partial<Post>): Promise<Post> {
+    await this.findById(id);
+    await this.postRepo.update(id, updateData);
+    return this.findById(id); 
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const post = await this.findById(id);
-    if (!post) throw new NotFoundException('Post not found');
-    return this.postRepo.remove(post);
+    await this.postRepo.remove(post);
   }
 }

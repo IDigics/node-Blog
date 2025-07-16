@@ -24,12 +24,12 @@ export class UsersService {
     return this.usersRepo.findOne({ where: { email } });
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const user = await this.findById(id);
-    return this.usersRepo.remove(user);
+    await this.usersRepo.remove(user);
   }
 
-  async update(id: number, attrs: Partial<User>) {
+  async update(id: number, attrs: Partial<User>): Promise<User> {
     const user = await this.findById(id);
     Object.assign(user, attrs);
     return this.usersRepo.save(user);

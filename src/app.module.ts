@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module,MiddlewareConsumer} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,6 +16,10 @@ import { User } from './users/user.entity';
 import { Post } from './posts/post.entity';
 import { Comment } from './comments/comment.entity';
 import { Vote } from './votes/vote.entity';
+import { ImagesService } from './images/images.service';
+
+import { IpLoggerMiddleware } from './auth/IpLoggerMiddleware';
+
 
 @Module({
   imports: [
@@ -36,6 +41,12 @@ import { Vote } from './votes/vote.entity';
     VotesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ImagesService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(IpLoggerMiddleware)
+      .forRoutes('*');
+  }
+}

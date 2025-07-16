@@ -1,7 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { User } from 'src/users/user.entity';
-import { Comment } from 'src/comments/comment.entity';
-import { Vote } from 'src/votes/vote.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Post {
@@ -11,18 +9,15 @@ export class Post {
   @Column()
   title: string;
 
-  @Column({ type: 'text' })
+  @Column()
+  image: string; 
+
+  @Column('text')
   content: string;
 
-  @Column({ nullable: true })
-  imagePath: string;
+  @CreateDateColumn()
+  date: Date;
 
-  @ManyToOne(() => User, user => user.posts)
-  author: User;
-
-  @OneToMany(() => Comment, comment => comment.post)
-  comments: Comment[];
-
-  @OneToMany(() => Vote, vote => vote.post)
-  votes: Vote[];
+  @ManyToOne(() => User)
+  user: User; 
 }

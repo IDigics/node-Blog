@@ -1,4 +1,4 @@
-import {Controller,Post,Param,Body,Session,UseGuards,NotFoundException} from '@nestjs/common';
+import { Controller, Post, Param, Body, Session, UseGuards, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { VotesService } from './votes.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from 'src/users/users.service';
@@ -15,12 +15,12 @@ export class VotesController {
   @Post(':postId')
   @UseGuards(AuthGuard)
   async vote(
-    @Param('postId') postId: string,
+    @Param('postId', ParseIntPipe) postId: number,
     @Body('value') value: number,
     @Session() session: Record<string, any>,
   ) {
     const user = await this.usersService.findById(session.userId);
-    const post = await this.postsService.findById(+postId);
+    const post = await this.postsService.findById(postId);
 
     if (!post) throw new NotFoundException('Post not found');
 
