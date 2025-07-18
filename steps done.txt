@@ -17,3 +17,15 @@ H-upload handling :                                     "npm install sharp"
 5. setup service controller and app.ts for session and authentication
 6. make auth guard to be used for post comment for nrml users and admin for posts crud
 7. install db visulaizor extension in vs code
+
+
+github pust
+ create new branch
+ checkout   
+ dto
+ test
+ push 
+ pull request main
+ md 
+ api doc
+ logging exception cleaner version

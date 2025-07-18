@@ -40,7 +40,7 @@ export class UsersController {
     return this.usersService.update(id, body);
   }
  @Patch(':id/make-admin')
- //@UseGuards(AdminGuard)
+ @UseGuards(AdminGuard)
 async makeAdmin(@Param('id', ParseIntPipe) id: number) {
   return this.usersService.update(id, { isAdmin: true });
 }
