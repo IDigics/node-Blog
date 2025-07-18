@@ -44,9 +44,9 @@ import { IpLoggerMiddleware } from './auth/IpLoggerMiddleware';
   providers: [AppService, ImageService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  /*configure(consumer: MiddlewareConsumer) {
       consumer
         .apply(IpLoggerMiddleware)
         .forRoutes('*');
-    }
+    }*/
 }
